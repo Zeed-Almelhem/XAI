@@ -561,7 +561,74 @@ def create_residual_plots(model, dataset, target_column):
 # create_residual_plots(model, df, 'Y')
 
 
-# Function 6 - Residual Plot:
+# Function 6 - Feature Importance Plot:
 
+def create_feature_importance_plot(importance, feature_names, width=800, height=500):
+    """
+    Create an interactive feature importance plot for a regression model using provided importance scores.
+
+    Parameters:
+    - importance: An array or list of feature importance scores.
+    - feature_names: A list of feature names corresponding to the importance scores.
+
+    Returns:
+    - None
+
+    Note:
+    To obtain feature importance scores based on your specific regression model, please refer to the following link
+    for guidance on how to calculate them:
+    
+    [Calculating Feature Importance with Python](https://machinelearningmastery.com/calculate-feature-importance-with-python/)
+    """
+     
+    # Create a DataFrame to store feature importance data
+    data = {"Feature Names": feature_names, "Importance Score": importance}
+    
+    # Create an interactive bar plot using Plotly
+    fig = px.bar(data, x="Importance Score", y="Feature Names", orientation="h", text="Importance Score",
+                 title="Feature Importance Plot", labels={"Importance Score": "Importance Score"},
+                 color_discrete_sequence=["#1f77b4"] * len(data))  # Set custom color
+
+    # Customize hover text
+    fig.update_traces(texttemplate='%{text:.4f}', textposition='outside')
+
+    # Configure plot layout
+    fig.update_layout(
+        autosize=False,
+        width=width,
+        height=height,
+        xaxis_title="Importance Score",
+        yaxis_title="Feature Names",
+        font=dict(size=14, color="white"),
+        paper_bgcolor="black",  # Set dark black background
+        plot_bgcolor="black",  # Set dark black background
+    )
+
+    # Show the interactive plot
+    fig.show()
+    return fig
 
 ### Test 7
+
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+import plotly.express as px
+
+# Sample data
+np.random.seed(42)
+X = np.random.rand(100, 3)  # Three input features
+y = 2*X[:, 0] + 3*X[:, 1] + 1*X[:, 2] + np.random.randn(100)  # Linear relationship with noise
+
+# Train a linear regression model
+model = LinearRegression()
+model.fit(X, y)
+
+# Extract feature importances (in this case, coefficients)
+feature_importance = model.coef_
+
+# Feature names (assuming you have them)
+feature_names = ["Feature 1", "Feature 2", "Feature 3"]
+
+# Create the feature importance plot
+create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
