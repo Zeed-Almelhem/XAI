@@ -610,25 +610,85 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
 
 ### Test 7
 
-import numpy as np
+# import numpy as np
+# import pandas as pd
+# from sklearn.linear_model import LinearRegression
+# import plotly.express as px
+
+# # Sample data
+# np.random.seed(42)
+# X = np.random.rand(100, 3)  # Three input features
+# y = 2*X[:, 0] + 3*X[:, 1] + 1*X[:, 2] + np.random.randn(100)  # Linear relationship with noise
+
+# # Train a linear regression model
+# model = LinearRegression()
+# model.fit(X, y)
+
+# # Extract feature importances (in this case, coefficients)
+# feature_importance = model.coef_
+
+# # Feature names (assuming you have them)
+# feature_names = ["Feature 1", "Feature 2", "Feature 3"]
+
+# # Create the feature importance plot
+# create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
+
+
+# Function 7 - Partial Dependence Plot (PDP):
+
+def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs. Predicted Distribution', width=800, height=400):
+    """
+    Create an Actual vs. Predicted Value Distribution plot.
+
+    Parameters:
+    - actual: A pandas Series or list containing actual target values.
+    - predicted: A pandas Series or list containing predicted target values.
+    - title: The title of the plot.
+    - width: The width of the plot.
+    - height: The height of the plot.
+
+    Returns:
+    - A Plotly figure for the distribution plot.
+
+    Example:
+    create_actual_vs_predicted_distribution(actual, predicted)
+    """
+
+    # Create a DataFrame to store the data
+    data = {"Actual": actual, "Predicted": predicted}
+
+    # Create a scatter plot with histograms using Plotly
+    fig = px.scatter(data, x="Actual", y="Predicted", marginal_x="histogram", marginal_y="histogram", title=title,
+                     labels={"Actual": "Actual", "Predicted": "Predicted"},
+                     color_discrete_sequence=["#135e91"])
+    
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(showgrid=False)
+
+    # Customize plot layout
+    fig.update_layout(
+        width=width,
+        height=height,
+        font=dict(size=14, color="white"),  # Set text color to white
+        paper_bgcolor="black",  # Set dark background
+        plot_bgcolor="black",  # Set dark background
+    )
+
+    # Show the interactive plot
+    fig.show()
+    return fig
+
+### Test 8
+
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-import plotly.express as px
+import numpy as np
 
 # Sample data
-np.random.seed(42)
-X = np.random.rand(100, 3)  # Three input features
-y = 2*X[:, 0] + 3*X[:, 1] + 1*X[:, 2] + np.random.randn(100)  # Linear relationship with noise
+actual_values = np.random.rand(100) * 10  # Actual target values
+predicted_values = actual_values + np.random.normal(0, 1, 100)  # Predicted target values (with some noise)
 
-# Train a linear regression model
-model = LinearRegression()
-model.fit(X, y)
+# Create a DataFrame from the sample data
+data = pd.DataFrame({'Actual': actual_values, 'Predicted': predicted_values})
 
-# Extract feature importances (in this case, coefficients)
-feature_importance = model.coef_
-
-# Feature names (assuming you have them)
-feature_names = ["Feature 1", "Feature 2", "Feature 3"]
-
-# Create the feature importance plot
-create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
+# Create the Actual vs. Predicted Value Distribution plot
+create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
