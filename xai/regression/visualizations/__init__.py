@@ -27,6 +27,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, e
     mean_squared_log_error
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
+import shap
 
 
 # Function 1 - Scatter Plot:
@@ -920,37 +921,104 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
     plt.show()
 
 
-### Test 9
+### Test 10
 
-import numpy as np
-from sklearn.datasets import make_regression
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
+# import numpy as np
+# from sklearn.datasets import make_regression
+# from sklearn.linear_model import LinearRegression
+# from sklearn.model_selection import train_test_split
 
-# Generate synthetic regression data
-X, y = make_regression(n_samples=100, n_features=2, noise=0.5, random_state=42)
+# # Generate synthetic regression data
+# X, y = make_regression(n_samples=100, n_features=2, noise=0.5, random_state=42)
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# # Split the data into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Create and train a Linear Regression model
-model = LinearRegression()
-model.fit(X_train, y_train)
+# # Create and train a Linear Regression model
+# model = LinearRegression()
+# model.fit(X_train, y_train)
 
-# Make predictions on the test data
-y_pred = model.predict(X_test)
+# # Make predictions on the test data
+# y_pred = model.predict(X_test)
 
-# Calculate additional custom loss functions if needed
-def custom_loss_function1(y_true, y_pred):
-    # Implement your custom loss calculation here
-    return np.mean(np.abs(y_true - y_pred))
+# # Calculate additional custom loss functions if needed
+# def custom_loss_function1(y_true, y_pred):
+#     # Implement your custom loss calculation here
+#     return np.mean(np.abs(y_true - y_pred))
 
-def custom_loss_function2(y_true, y_pred):
-    # Implement another custom loss calculation here
-    return np.mean((y_true - y_pred) ** 2)
+# def custom_loss_function2(y_true, y_pred):
+#     # Implement another custom loss calculation here
+#     return np.mean((y_true - y_pred) ** 2)
 
-# Visualize advanced regression metrics including custom losses
-visualize_advanced_regression_metrics(y_test, y_pred, custom_losses=[("Custom Loss 1", custom_loss_function1),
-                                                                   ("Custom Loss 2", custom_loss_function2)])
+# # Visualize advanced regression metrics including custom losses
+# visualize_advanced_regression_metrics(y_test, y_pred, custom_losses=[("Custom Loss 1", custom_loss_function1),
+#                                                                    ("Custom Loss 2", custom_loss_function2)])
 
 
+
+# Function 10 - Calculate advanced regression evaluation metrics:
+
+def residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
+    # Ensure that the model is callable
+    if not callable(getattr(model, "predict", None)):
+        raise TypeError("The passed model is not callable and cannot be analyzed directly with the given masker! Model: " + str(model))
+    
+    # Get model predictions
+    y_pred = model.predict(X_test)
+    
+    # Calculate residuals
+    residuals = y_test - y_pred
+    
+    # Initialize the explainer
+    explainer = shap.Explainer(model)
+    
+    # Calculate Shapley values
+    shapley_values = explainer.shap_values(X_test)
+    
+    # Flatten Shapley values and residuals
+    shapley_values_flat = shapley_values.flatten()
+    residuals_flat = residuals.flatten()
+    
+    # Ensure that both arrays have the same length
+    min_len = min(len(shapley_values_flat), len(residuals_flat))
+    shapley_values_flat = shapley_values_flat[:min_len]
+    residuals_flat = residuals_flat[:min_len]
+    
+    # Create a DataFrame for plotting
+    df = pd.DataFrame({"Shapley Values": shapley_values_flat, "Residuals": residuals_flat})
+    
+    # Create a scatter plot
+    plt.figure(figsize=(10, 6))
+    plt.scatter(df["Shapley Values"], df["Residuals"], alpha=0.5)
+    plt.xlabel("Shapley Values")
+    plt.ylabel("Residuals")
+    plt.title("Residual Plot with Shapley Values")
+    
+    # Show the plot
+    plt.show()
+
+### Test 11
+
+# import numpy as np
+# import pandas as pd
+# from sklearn.model_selection import train_test_split
+# from sklearn.ensemble import RandomForestRegressor
+# from sklearn.datasets import make_regression
+# import shap
+# import matplotlib.pyplot as plt
+
+# # Generate a synthetic regression dataset
+# X, y = make_regression(n_samples=100, n_features=5, noise=0.1, random_state=42)
+
+# # Split the dataset into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# # Train a RandomForestRegressor
+# model = RandomForestRegressor(n_estimators=100, random_state=42)
+# model.fit(X_train, y_train)
+
+# # Define feature names (replace with your actual feature names)
+# feature_names = [f"Feature {i}" for i in range(X.shape[1])]
+
+# # Create a residual plot with Shapley values
+# residual_plot_with_shapley(model, X_test, y_test, feature_names)
