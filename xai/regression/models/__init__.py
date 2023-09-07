@@ -1,38 +1,79 @@
 # Import the libraries:
+# import pandas as pd
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression, Lasso
+# import joblib
+
+# # Build a Linear Regression Model & a Lasso Regression Model:
+
+# ## Load the "Admission_Prediction" dataset
+# data = pd.read_csv("https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/datasets/regression_data/Admission_Prediction.csv")
+
+# ## Split the data into features (X) and target (y)
+# X = data.drop(columns=["Chance of Admit"])
+# y = data["Chance of Admit"]
+
+# ## Split the data into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# ## Create and train a Linear Regression model
+# linear_reg_model = LinearRegression()
+# linear_reg_model.fit(X_train, y_train)
+
+# ## Save the Linear Regression model to a file
+# joblib.dump(linear_reg_model, "linear_regression_model.pkl")
+
+# ## Create and train a Lasso Regression model
+# lasso_reg_model = Lasso(alpha=0.01)  # You can adjust the alpha parameter as needed
+# lasso_reg_model.fit(X_train, y_train)
+
+# ## Save the Lasso Regression model to a file
+# joblib.dump(lasso_reg_model, "lasso_regression_model.pkl")
+
+# ## Save the training and testing data to separate files
+# X_train.to_csv("admission_prediction_X_train.csv", index=False)
+# X_test.to_csv("admission_prediction_X_test.csv", index=False)
+# y_train.to_csv("admission_prediction_y_train.csv", index=False)
+# y_test.to_csv("admission_prediction_y_test.csv", index=False)
+
+
+# Test the Linear Regression Model & the Lasso Regression Model that we built:
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression, Lasso
 import joblib
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# Build a Linear Regression Model & a Lasso Regression Model:
+# Load the testing data
+X_test = pd.read_csv("admission_prediction_X_test.csv")
+y_test = pd.read_csv("admission_prediction_y_test.csv")
 
-## Load the "Admission_Prediction" dataset
-data = pd.read_csv("https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/datasets/regression_data/Admission_Prediction.csv")
+# Load the saved Linear Regression model
+linear_reg_model = joblib.load("linear_regression_model.pkl")
 
-## Split the data into features (X) and target (y)
-X = data.drop(columns=["Chance of Admit"])
-y = data["Chance of Admit"]
+# Load the saved Lasso Regression model
+lasso_reg_model = joblib.load("lasso_regression_model.pkl")
 
-## Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Predict using the Linear Regression model
+linear_reg_predictions = linear_reg_model.predict(X_test)
 
-## Create and train a Linear Regression model
-linear_reg_model = LinearRegression()
-linear_reg_model.fit(X_train, y_train)
+# Predict using the Lasso Regression model
+lasso_reg_predictions = lasso_reg_model.predict(X_test)
 
-## Save the Linear Regression model to a file
-joblib.dump(linear_reg_model, "linear_regression_model.pkl")
+# Evaluate the Linear Regression model
+linear_reg_mae = mean_absolute_error(y_test, linear_reg_predictions)
+linear_reg_mse = mean_squared_error(y_test, linear_reg_predictions)
+linear_reg_r2 = r2_score(y_test, linear_reg_predictions)
 
-## Create and train a Lasso Regression model
-lasso_reg_model = Lasso(alpha=0.01)  # You can adjust the alpha parameter as needed
-lasso_reg_model.fit(X_train, y_train)
+print("Linear Regression Metrics:")
+print("Mean Absolute Error (MAE):", linear_reg_mae)
+print("Mean Squared Error (MSE):", linear_reg_mse)
+print("R-squared (R²):", linear_reg_r2)
 
-## Save the Lasso Regression model to a file
-joblib.dump(lasso_reg_model, "lasso_regression_model.pkl")
+# Evaluate the Lasso Regression model
+lasso_reg_mae = mean_absolute_error(y_test, lasso_reg_predictions)
+lasso_reg_mse = mean_squared_error(y_test, lasso_reg_predictions)
+lasso_reg_r2 = r2_score(y_test, lasso_reg_predictions)
 
-## Save the training and testing data to separate files
-X_train.to_csv("admission_prediction_X_train.csv", index=False)
-X_test.to_csv("admission_prediction_X_test.csv", index=False)
-y_train.to_csv("admission_prediction_y_train.csv", index=False)
-y_test.to_csv("admission_prediction_y_test.csv", index=False)
-
+print("\nLasso Regression Metrics:")
+print("Mean Absolute Error (MAE):", lasso_reg_mae)
+print("Mean Squared Error (MSE):", lasso_reg_mse)
+print("R-squared (R²):", lasso_reg_r2)
