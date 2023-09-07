@@ -18,6 +18,10 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
+import scipy.stats as stats
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, mean_absolute_percentage_error
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_regression
 
 
 
@@ -660,7 +664,7 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
     # Create a scatter plot with histograms using Plotly
     fig = px.scatter(data, x="Actual", y="Predicted", marginal_x="histogram", marginal_y="histogram", title=title,
                      labels={"Actual": "Actual", "Predicted": "Predicted"},
-                     color_discrete_sequence=["#135e91"])
+                     color_discrete_sequence=["#1f77b4"])
     
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False)
@@ -680,15 +684,80 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
 
 ### Test 8
 
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 
-# Sample data
-actual_values = np.random.rand(100) * 10  # Actual target values
-predicted_values = actual_values + np.random.normal(0, 1, 100)  # Predicted target values (with some noise)
+# # Sample data
+# actual_values = np.random.rand(100) * 10  # Actual target values
+# predicted_values = actual_values + np.random.normal(0, 1, 100)  # Predicted target values (with some noise)
 
-# Create a DataFrame from the sample data
-data = pd.DataFrame({'Actual': actual_values, 'Predicted': predicted_values})
+# # Create a DataFrame from the sample data
+# data = pd.DataFrame({'Actual': actual_values, 'Predicted': predicted_values})
 
-# Create the Actual vs. Predicted Value Distribution plot
-create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
+# # Create the Actual vs. Predicted Value Distribution plot
+# create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
+
+
+# Function 8 - QQ Plot (Quantile-Quantile Plot):
+
+def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
+    """
+    Create a QQ Plot to assess whether residuals follow a normal distribution using Seaborn.
+
+    Parameters:
+    - residuals: A NumPy array or list containing the residuals of a regression model.
+    - title: Title for the QQ Plot (default is "QQ Plot").
+    - figsize: Figure size (width, height) in inches (default is (8, 6)).
+    - color: Color for the QQ Plot points (default is "#1f77b4").
+
+    Returns:
+    - None
+
+    [How to interpret a QQ plot](https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot)
+    """
+
+    # Sort residuals
+    sorted_residuals = np.sort(residuals)
+
+    # Generate theoretical quantiles for a normal distribution
+    theoretical_quantiles = stats.norm.ppf(np.linspace(0.01, 0.99, len(residuals)))
+
+    # Create QQ Plot using Seaborn
+    plt.figure(figsize=figsize)
+    sns.scatterplot(x=theoretical_quantiles, y=sorted_residuals, color=color, edgecolor="k", alpha=0.7)
+    plt.title(title)
+    plt.xlabel("Theoretical Quantiles")
+    plt.ylabel("Sorted Residuals")
+
+    # Customize plot
+    plt.grid(True, linestyle="--", alpha=0.6)
+    plt.tight_layout()
+
+    # Show the QQ Plot
+    plt.show()
+
+### Test 9
+
+# import numpy as np
+# import pandas as pd
+# import statsmodels.api as sm
+# import seaborn as sns
+# import matplotlib.pyplot as plt
+
+# # Example usage:
+# # Create some sample data
+# np.random.seed(0)
+# X = np.random.rand(100, 2)
+# y = 2 * X[:, 0] + 3 * X[:, 1] + np.random.randn(100)
+
+# # Fit a linear regression model
+# X_with_const = sm.add_constant(X)  # Add a constant term
+# model = sm.OLS(y, X_with_const).fit()
+
+# # Calculate residuals
+# residuals = y - model.predict(X_with_const)
+
+# # Create a QQ Plot
+# create_qq_plot(residuals, title="QQ Plot for Residuals")
+
+
