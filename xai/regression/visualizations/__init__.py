@@ -4,27 +4,18 @@ import pandas as pd
 import seaborn as sns
 import dash
 from dash import dcc, html
-from dash.dependencies import Input, Output
 import plotly.express as px
 import plotly.graph_objs as go  # Import the graph_objs module
-import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
-from dash import dcc, html
 from dash.dependencies import Input, Output
-import plotly.express as px
-import plotly.graph_objs as go
-import pandas as pd
-import numpy as np
-from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 import scipy.stats as stats
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, mean_absolute_percentage_error
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_regression
-from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_squared_log_error, r2_score, explained_variance_score
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, explained_variance_score, \
-    mean_squared_log_error
+from sklearn.metrics import mean_squared_log_error, r2_score, explained_variance_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, explained_variance_score
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 import shap
