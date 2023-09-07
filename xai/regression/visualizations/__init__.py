@@ -22,7 +22,11 @@ import scipy.stats as stats
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, mean_absolute_percentage_error
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_regression
-
+from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_squared_log_error, r2_score, explained_variance_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, explained_variance_score, \
+    mean_squared_log_error
+from scipy import stats
+from statsmodels.graphics.gofplots import qqplot
 
 
 # Function 1 - Scatter Plot:
@@ -762,7 +766,7 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
 
 
 
-# Function 9 - Partial Dependence Plot (PDP):
+# Function 9 - Calculate regression evaluation metrics:
 
 def visualize_regression_metrics(y_true, y_pred):
     """
@@ -821,3 +825,132 @@ def visualize_regression_metrics(y_true, y_pred):
 
 # # Visualize regression metrics
 # visualize_regression_metrics(y_test, y_pred)
+
+
+
+# Function 9 - Calculate advanced regression evaluation metrics:
+
+def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
+    """
+    Create visualizations for advanced regression evaluation metrics.
+
+    Parameters:
+    - y_true: Array-like, true target values.
+    - y_pred: Array-like, predicted target values.
+    - custom_losses: List of tuples (name, function), where each function calculates a custom loss.
+
+    Returns:
+    - None
+    """
+
+    # Initialize subplots
+    num_metrics = 8  # Number of metrics (excluding custom losses)
+    num_rows = 2 if custom_losses else 4  # Number of subplot rows
+
+    fig, axes = plt.subplots(num_rows, 2, figsize=(14, 10))
+    plt.subplots_adjust(hspace=0.4)
+    fig.suptitle("Advanced Regression Metrics Visualizations", fontsize=16)
+
+    # Metric names
+    metric_names = ["Mean Absolute Error (MAE)", "Mean Squared Error (MSE)", "Root Mean Squared Error (RMSE)",
+                    "Mean Bias Deviation (MBD)", "Coefficient of Determination (COD)",
+                    "Explained Variance Score", "Fraction of Explained Variance (FEV)", "Huber Loss"]
+    # Define metric functions
+    def mean_absolute_error(y, y_pred):
+        return np.mean(np.abs(y - y_pred))
+
+    def mean_squared_error_func(y, y_pred):
+        return np.mean((y - y_pred) ** 2)
+
+    def root_mean_squared_error(y, y_pred):
+        return np.sqrt(mean_squared_error(y, y_pred))
+
+    def mean_absolute_percentage_error(y, y_pred):
+        return np.mean(np.abs((y - y_pred) / y)) * 100
+
+    def huber_loss(y, y_pred):
+        return np.mean(np.where(np.abs(y - y_pred) < 1, 0.5 * (y - y_pred) ** 2, np.abs(y - y_pred) - 0.5))
+    
+    # Metric functions
+    metric_functions = [
+    mean_absolute_error,
+    mean_squared_error_func,
+    root_mean_squared_error,
+    mean_absolute_percentage_error,
+    r2_score,
+    explained_variance_score,
+    explained_variance_score,
+    huber_loss
+    ]
+
+
+    # Calculate and plot metrics
+    for i, ax in enumerate(axes.flatten()):
+        if i >= num_metrics:
+            break
+        metric_name = metric_names[i]
+        metric_func = metric_functions[i]
+
+        # Calculate metric
+        if metric_func == explained_variance_score:
+            metric_value = metric_func(y_true, y_pred, multioutput="uniform_average")
+        else:
+            metric_value = metric_func(y_true, y_pred)
+
+        # Plot metric
+        residuals = np.array(y_true - y_pred)  # Convert residuals to a NumPy array
+        sns.histplot(residuals, kde=True, ax=ax)
+        ax.set_title(f"{metric_name}\n{metric_value:.4f}", fontsize=12)
+        ax.set_xlabel("Residuals")
+        ax.set_ylabel("Frequency")
+
+    # Custom Losses
+    if custom_losses:
+        for i, (loss_name, loss_function) in enumerate(custom_losses):
+            ax = axes[num_rows - 1, i % 2]  # Place custom loss plots in the last row
+            # Calculate custom loss residuals and convert them to a NumPy array
+            custom_residuals = np.array([loss_function(y_t, y_p) for y_t, y_p in zip(y_true, y_pred)])
+            # Plot custom loss histogram using matplotlib
+            ax.hist(custom_residuals, bins=30, alpha=0.7, color='b', label=loss_name)
+            ax.set_title(loss_name, fontsize=12)
+            ax.set_xlabel("Custom Loss Residuals")
+            ax.set_ylabel("Frequency")
+            ax.legend()
+
+    plt.show()
+
+
+### Test 9
+
+import numpy as np
+from sklearn.datasets import make_regression
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# Generate synthetic regression data
+X, y = make_regression(n_samples=100, n_features=2, noise=0.5, random_state=42)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create and train a Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred = model.predict(X_test)
+
+# Calculate additional custom loss functions if needed
+def custom_loss_function1(y_true, y_pred):
+    # Implement your custom loss calculation here
+    return np.mean(np.abs(y_true - y_pred))
+
+def custom_loss_function2(y_true, y_pred):
+    # Implement another custom loss calculation here
+    return np.mean((y_true - y_pred) ** 2)
+
+# Visualize advanced regression metrics including custom losses
+visualize_advanced_regression_metrics(y_test, y_pred, custom_losses=[("Custom Loss 1", custom_loss_function1),
+                                                                   ("Custom Loss 2", custom_loss_function2)])
+
+
