@@ -761,3 +761,63 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
 # create_qq_plot(residuals, title="QQ Plot for Residuals")
 
 
+
+# Function 9 - Partial Dependence Plot (PDP):
+
+def visualize_regression_metrics(y_true, y_pred):
+    """
+    Visualize various regression evaluation metrics for model performance.
+
+    Parameters:
+    - y_true: Array-like, true target values.
+    - y_pred: Array-like, predicted target values.
+
+    Returns:
+    - None
+    """
+    # Calculate regression evaluation metrics
+    mae = mean_absolute_error(y_true, y_pred)
+    mse = mean_squared_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    mape = mean_absolute_percentage_error(y_true, y_pred) * 100
+    r2 = r2_score(y_true, y_pred)
+
+    # Create a bar plot to visualize metrics
+    metrics = ['MAE', 'MSE', 'RMSE', 'MAPE', 'R-squared']
+    values = [mae, mse, rmse, mape, r2]
+
+    sns.set(style="whitegrid")
+    plt.figure(figsize=(10, 6))
+    ax = sns.barplot(x=values, y=metrics, palette="viridis")
+
+    # Add labels and values to the bars
+    for i, v in enumerate(values):
+        ax.text(v + 0.005, i, f'{v:.4f}', va='center', color='black', fontsize=12)
+
+    # Customize the plot
+    plt.title("Regression Evaluation Metrics", fontsize=16)
+    plt.xlabel("Metric Value", fontsize=14)
+    plt.ylabel("Metric", fontsize=14)
+    plt.xlim(0, max(values) + 0.1)
+
+    # Show the plot
+    plt.show()
+
+### Test 9
+
+
+# # Create a synthetic regression dataset
+# X, y = make_regression(n_samples=100, n_features=1, noise=0.1, random_state=42)
+
+# # Split the data into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# # Train a linear regression model
+# model = LinearRegression()
+# model.fit(X_train, y_train)
+
+# # Make predictions on the test data
+# y_pred = model.predict(X_test)
+
+# # Visualize regression metrics
+# visualize_regression_metrics(y_test, y_pred)
