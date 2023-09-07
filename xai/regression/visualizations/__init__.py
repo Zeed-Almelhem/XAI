@@ -956,7 +956,7 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
 
 
 
-# Function 10 - Calculate advanced regression evaluation metrics:
+# Function 10 - Residual Plot with Shapley Values:
 
 def residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
     # Ensure that the model is callable
@@ -1022,3 +1022,80 @@ def residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
 
 # # Create a residual plot with Shapley values
 # residual_plot_with_shapley(model, X_test, y_test, feature_names)
+
+
+
+# Function 11 - Error Heatmap by Feature:
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def create_error_heatmap(data, target_column, model, feature_columns):
+    """
+    Create an error heatmap by feature using Seaborn.
+
+    Parameters:
+    - data: DataFrame containing both feature and target columns.
+    - target_column: Name of the target column.
+    - model: Trained regression model.
+    - feature_columns: List of feature column names.
+
+    Returns:
+    - None
+    """
+    # Copy the data and add predicted values to the DataFrame
+    df = data.copy()
+    df['Predicted'] = model.predict(df[feature_columns])
+
+    # Calculate prediction errors
+    df['Error'] = df[target_column] - df['Predicted']
+
+    # Create a pivot table for the error heatmap
+    error_pivot = df.pivot_table(index=feature_columns[0], columns=feature_columns[1], values='Error', aggfunc='mean')
+
+    # Create the error heatmap using Seaborn
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(error_pivot, cmap='coolwarm', annot=True, fmt='.2f', cbar_kws={'label': 'Mean Error'})
+    plt.title('Error Heatmap by Feature')
+    plt.xlabel(feature_columns[1])
+    plt.ylabel(feature_columns[0])
+    plt.show()
+
+
+### Test 12:
+
+# import pandas as pd
+# import numpy as np
+# from sklearn.model_selection import train_test_split
+# from sklearn.linear_model import LinearRegression
+# import plotly.express as px
+
+# # Generate sample data
+# np.random.seed(0)
+# data = {
+#     'Feature1': np.random.rand(100),
+#     'Feature2': np.random.rand(100),
+#     'Target': 2 * np.random.rand(100) + 3
+# }
+# df = pd.DataFrame(data)
+
+# # Split the data into features and target
+# X = df[['Feature1', 'Feature2']]
+# y = df['Target']
+
+# # Split the data into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# # Train a linear regression model
+# model = LinearRegression()
+# model.fit(X_train, y_train)
+
+# # Add predicted values to the test data
+# df_test = X_test.copy()
+# df_test['Target'] = y_test
+# df_test['Predicted'] = model.predict(X_test)
+
+# # Create an error heatmap by feature
+# create_error_heatmap(df_test, 'Target', model, ['Feature1', 'Feature2'])
+
