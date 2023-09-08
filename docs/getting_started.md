@@ -1,18 +1,18 @@
-## The Idea Behind the XAI Library
+<h1 id="the-idea-behind-the-xai-library" style="color: #a4edb8; background: #152737; padding: 20px; border-radius: 20px; text-align: center; border: 5px solid #990000;">The Idea Behind the XAI Library</h1>
 
-### Identifying a Problem or Need
+<h2 id="identifying-a-problem-or-need" style="color: #a4edb8; background: #152737; padding: 15px; border-radius: 15px; text-align: center; border: 3px solid #990000;">Identifying a Problem or Need</h2>
 
 The eXplainable Artificial Intelligence (XAI) library was born out of the need to provide a comprehensive toolkit for data scientists and machine learning practitioners. We recognized the challenge of understanding, interpreting, and visualizing complex machine learning models, especially when it comes to explaining their predictions. This library aims to address the pressing problem of model interpretability and transparency.
 
 Our initial research involved a thorough examination of existing libraries and tools in the domain of machine learning explainability. While there are valuable resources available, we saw the opportunity to create a unique and cohesive solution that offers more advanced visualizations, pre-processed datasets, and pre-trained models. This distinctive approach sets the XAI library apart from other options in the field.
 
-### Defining Objectives and Scope
+<h2 id="defining-objectives-and-scope" style="color: #a4edb8; background: #152737; padding: 15px; border-radius: 15px; text-align: center; border: 3px solid #990000;">Defining Objectives and Scope</h2>
 
 Our primary objective with the XAI library is to enhance the understanding of machine learning models across different domains and use cases. We recognize that AI models have become integral to decision-making processes in various industries, but their opacity can be a significant barrier to trust and adoption.
 
 The scope of our library is broad, as we aim to cover a wide range of AI model types and data modalities. While the first version of the library focuses on supervised learning with a specific emphasis on regression analysis, we have plans to expand its capabilities in future releases. This expansion will include support for classification tasks, unsupervised learning, reinforcement learning (RL), and more.
 
-### Future Developments
+<h2 id="future-developments" style="color: #a4edb8; background: #152737; padding: 15px; border-radius: 15px; text-align: center; border: 3px solid #990000;">Future Developments</h2>
 
 In the coming releases, we envision the XAI library evolving into a versatile and indispensable resource for data scientists and AI practitioners. Some of our future developments include:
 
@@ -28,7 +28,7 @@ In the coming releases, we envision the XAI library evolving into a versatile an
 
 We are committed to the ongoing development and enhancement of the XAI library to make it a valuable asset in the ever-evolving field of artificial intelligence. We invite you to join us on this journey toward making AI more transparent, interpretable, and accessible to all.
 
-## Getting Started with XAI Library (Version 1.0)
+<h1 id="getting-started-with-xai-library-version-1.0" style="color: #a4edb8; background: #152737; padding: 20px; border-radius: 20px; text-align: center; border: 5px solid #990000;">Getting Started with XAI Library (Version 1.0)</h1>
 
 Welcome to the eXplainable Artificial Intelligence (XAI) library, version 1.0! This initial release is designed to empower your regression analysis by providing powerful visualizations, pre-processed datasets, and pre-trained regression models. In this guide, we'll walk you through the key features and how to get started with the XAI library.
 
