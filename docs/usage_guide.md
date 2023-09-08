@@ -8,6 +8,7 @@ Welcome to the XAI (eXplainable Artificial Intelligence) Library Usage Guide. In
 - [Classification Analysis](#classification-analysis)
 - [Unsupervised Learning](#unsupervised-learning)
 - [Reinforcement Learning](#reinforcement-learning)
+- [Advanced Features](#advanced-features)
 
 ## Regression Analysis
 
