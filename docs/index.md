@@ -1,11 +1,3 @@
----
-layout: default
-title: Home
-nav_order: 1
-description: "Welcome to the XAI (eXplainable Artificial Intelligence) Library Documentation. Explore our comprehensive toolkit for enhancing model interpretability and transparency."
-permalink: /
----
-
 # Welcome to the XAI Library Documentation
 
 The eXplainable Artificial Intelligence (XAI) Library is your comprehensive toolkit for enhancing model interpretability and transparency in the world of artificial intelligence. Whether you're a data scientist, machine learning practitioner, or just curious about how AI models work, this library provides valuable resources to understand, explain, and visualize complex models.
