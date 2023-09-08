@@ -1,34 +1,18 @@
-from setuptools import setup, find_packages
+Metadata-Version: 2.1
+Name: xai
+Version: 0.0.1
+Summary: Explainable Artificial Intelligence (XAI) Library
+Home-page: https://github.com/Zeed-Almelhem/XAI
+Author: Zeed Almelhem
+Author-email: info@zeed-almelhem.com
+Keywords: xai,explainable ai,interpretable ai,machine learning,deep learning,artificial intelligence,data science,model interpretability,model transparency,model explanation,model visualization,regression analysis,classification,supervised learning,unsupervised learning,reinforcement learning,data visualization,feature importance,regression metrics,model evaluation,machine learning library,python library,machine learning explainability,ai transparency,ai ethics,ai accountability,model explainability techniques,ai insights,open source,data scientists,machine learning practitioners
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
 
-dependencies = [
-    "matplotlib",
-    "pandas",
-    "seaborn",
-    "dash",
-    "dash-core-components",
-    "dash-html-components",
-    "plotly",
-    "numpy",
-    "scikit-learn",
-    "scipy",
-    "statsmodels",
-    "shap",
-]
 
-keywords=[
-    'xai', 'explainable ai', 'interpretable ai', 'machine learning',
-    'deep learning', 'artificial intelligence', 'data science',
-    'model interpretability', 'model transparency', 'model explanation',
-    'model visualization', 'regression analysis', 'classification',
-    'supervised learning', 'unsupervised learning', 'reinforcement learning',
-    'data visualization', 'feature importance', 'regression metrics',
-    'model evaluation', 'machine learning library', 'python library',
-    'machine learning explainability', 'ai transparency', 'ai ethics',
-    'ai accountability', 'model explainability techniques', 'ai insights',
-    'open source', 'data scientists', 'machine learning practitioners'
-]
-
-long_description = """
 # XAI (eXplainable Artificial Intelligence) Library
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -87,23 +71,3 @@ For inquiries and feedback, please feel free to contact the author:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-"""
-
-setup(
-    name="xai",
-    version="0.0.1",
-    packages=find_packages(),
-    install_requires=dependencies,
-    author="Zeed Almelhem",
-    author_email="info@zeed-almelhem.com",
-    description="Explainable Artificial Intelligence (XAI) Library",
-    long_description_content_type="text/markdown",
-    long_description=long_description,
-    keywords= keywords,
-    url="https://github.com/Zeed-Almelhem/XAI",
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-)
