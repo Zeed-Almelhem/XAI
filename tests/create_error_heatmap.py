@@ -35,5 +35,3 @@ df_test['Predicted'] = model.predict(X_test)
 create_error_heatmap(df_test, 'Target', model, ['Feature1', 'Feature2'])
 
 
-
-
