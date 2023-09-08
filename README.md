@@ -40,13 +40,13 @@ Explore practical examples demonstrating the library's capabilities in the [Exam
 
 For inquiries and feedback, please feel free to contact the author:
 
-- Email(z@zeed-almelhem.com)
+- Email (z@zeed-almelhem.com)
 - [Personal Website](https://www.zeed-almelhem.com/)
 - [Kaggle](https://www.kaggle.com/zeeda1melhem)
 - [GitHub](https://github.com/Zeed-Almelhem)
 - [Medium](https://medium.com/@zeed.almelhem)
 - [Instagram](https://www.instagram.com/zeed_almelhem/)
-- [LinkedIn](https://www.linkedin.com/in/zeed-almelhem)
+- [LinkedIn](https://www.linkedin.com/in/zeed-almelhem/)
 - [Twitter](https://twitter.com/Zeed_almelhem)
 - [Blog](https://www.zeed-almelhem.com/blog)
 - [Projects](https://www.zeed-almelhem.com/projects)
