@@ -3,9 +3,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
-from XAI.xai.regression.visualizations import create_two_column_scatter_plot
-
-#from create_scatter_plot import create_two_column_scatter_plot  # Import the custom function
+from xai.regression.visualizations import create_two_column_scatter_plot#from create_scatter_plot import create_two_column_scatter_plot  # Import the custom function
 
 # Generate synthetic data for demonstration
 np.random.seed(0)
