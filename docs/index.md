@@ -30,7 +30,7 @@ We welcome contributions from the open-source community. Learn how to contribute
 
 ## License
 
-The XAI Library is open-source and available under the MIT License. See the [License](./LICENSE) page for details.
+The XAI Library is open-source and available under the MIT License. See the [License](https://github.com/Zeed-Almelhem/XAI/blob/main/LICENSE) page for details.
 
 ## About
 
