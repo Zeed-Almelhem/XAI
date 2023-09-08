@@ -19,8 +19,8 @@ The XAI (eXplainable Artificial Intelligence) Library is a powerful toolkit desi
 To harness the power of the XAI Library, follow these steps:
 
 1. **Install the Library**: Begin by including the library in your Python environment.
-2. **Explore Documentation**: Refer to the [Getting Started Guide](XAI\docs) to understand the library's objectives and scope.
-3. **Usage Guide**: Dive into the [Usage Guide](XAI\docs\usage_guide.md) for detailed instructions on using the library's features.
+2. **Explore Documentation**: Refer to the [Getting Started Guide](https://github.com/Zeed-Almelhem/XAI/blob/main/docs/getting_started.md) to understand the library's objectives and scope.
+3. **Usage Guide**: Dive into the [Usage Guide](https://github.com/Zeed-Almelhem/XAI/blob/main/docs/usage_guide.md) for detailed instructions on using the library's features.
 
 ## Examples
 
@@ -28,9 +28,9 @@ Explore practical examples demonstrating the library's capabilities in the [Exam
 
 ## Documentation
 
-- [Getting Started Guide](XAI\docs\getting_started.md): Learn about the library's objectives and scope.
-- [Usage Guide](XAI\docs\usage_guide.md): Detailed instructions on using the library's features.
-- [Index](XAI\docs\index.md): The main page with information about the library and its creator.
+- [Getting Started Guide](https://github.com/Zeed-Almelhem/XAI/blob/main/docs/getting_started.md): Learn about the library's objectives and scope.
+- [Usage Guide](https://github.com/Zeed-Almelhem/XAI/blob/main/docs/usage_guide.md): Detailed instructions on using the library's features.
+- [Index](https://github.com/Zeed-Almelhem/XAI/blob/main/docs/index.md): The main page with information about the library and its creator.
 
 ## Author
 
