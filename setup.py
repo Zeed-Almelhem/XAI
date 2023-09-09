@@ -94,8 +94,8 @@ setup(
     version="0.0.2",
     packages=find_packages(),
     package_data={
-        'XAI.xai.datasets.regression_data': ['*.csv'],
-        'XAI.xai.regression.models': ['*.pkl', '*.csv'],
+        'xai.datasets.regression_data': ['*.csv'],
+        'xai.regression.models': ['*.pkl', '*.csv'],
     },
     install_requires=dependencies,
     author="Zeed Almelhem",
