@@ -169,8 +169,9 @@
 
 import pandas as pd
 import joblib
+import os
 
-def load_admission_regression_data_and_model():
+def load_linear_regression_model_and_data():
     """
     Load data and a Linear Regression model for admission prediction.
 
@@ -187,13 +188,20 @@ def load_admission_regression_data_and_model():
     y_train = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/admission_prediction_y_train.csv')
     X_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/admission_prediction_X_test.csv')
     y_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/admission_prediction_y_test.csv')
+   
+    # Get the directory of the current script
+    script_dir = os.path.dirname(__file__)
 
-    # Load the Linear Regression model
-    model = joblib.load('linear_regression_model.pkl')
+    # Construct the full path to the model file
+    model_path = os.path.join(script_dir, 'linear_regression_model.pkl')
+
+    # Load the model
+    model = joblib.load(model_path)
+
 
     return X_train, y_train, X_test, y_test, model
 
-def load_lasso_regression_data_and_model():
+def load_lasso_regression_model_and_data():
     """
     Load data and a Lasso Regression model for admission prediction.
 
@@ -209,13 +217,19 @@ def load_lasso_regression_data_and_model():
     y_train = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/admission_prediction_y_train.csv')
     X_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/admission_prediction_X_test.csv')
     y_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/admission_prediction_y_test.csv')
+   
+    # Get the directory of the current script
+    script_dir = os.path.dirname(__file__)
 
-    # Load the Lasso Regression model
-    model = joblib.load('lasso_regression_model.pkl')
+    # Construct the full path to the model file
+    model_path = os.path.join(script_dir, 'lasso_regression_model.pkl')
+
+    # Load the model
+    model = joblib.load(model_path)
 
     return X_train, y_train, X_test, y_test, model
 
-def load_random_forest_data_and_model():
+def load_random_forest_model_and_data():
     """
     Load data and a Random Forest model for bike sharing demand prediction.
 
@@ -232,12 +246,18 @@ def load_random_forest_data_and_model():
     X_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/bike_sharing_demand_X_test.csv')
     y_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/bike_sharing_demand_y_test.csv')
 
-    # Load the Random Forest model
-    model = joblib.load('random_forest_model.pkl')
+    # Get the directory of the current script
+    script_dir = os.path.dirname(__file__)
+
+    # Construct the full path to the model file
+    model_path = os.path.join(script_dir, 'random_forest_model.pkl')
+
+    # Load the model
+    model = joblib.load(model_path)
 
     return X_train, y_train, X_test, y_test, model
 
-def load_support_vector_data_and_model():
+def load_support_vector_model_and_data():
     """
     Load data and a Support Vector model for bike sharing demand prediction.
 
@@ -253,14 +273,21 @@ def load_support_vector_data_and_model():
     y_train = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/bike_sharing_demand_y_train.csv')
     X_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/bike_sharing_demand_X_test.csv')
     y_test = pd.read_csv(r'https://raw.githubusercontent.com/Zeed-Almelhem/XAI/main/xai/regression/models/bike_sharing_demand_y_test.csv')
-    # Load the Support Vector model
-    model = joblib.load(r'support_vector_model.pkl')
+    
+    # Get the directory of the current script
+    script_dir = os.path.dirname(__file__)
+
+    # Construct the full path to the model file
+    model_path = os.path.join(script_dir, 'support_vector_model.pkl')
+
+    # Load the model
+    model = joblib.load(model_path)
 
     return X_train, y_train, X_test, y_test, model
 
 # Test:
 
-# X_train, y_train, X_test, y_test, model = load_random_forest_data_and_model()
+# X_train, y_train, X_test, y_test, model = load_lasso_regression_model_and_data()
 # print(model)
 
 # # import os
