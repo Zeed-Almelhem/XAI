@@ -53,7 +53,7 @@ def create_two_column_scatter_plot(
     y_actual = df[y_column]
 
     # Use the model to make predictions
-    y_predicted = model.predict(x_data.values.reshape(-1, 1))
+    y_predicted = model.predict(df.drop(columns=[y_column]))
 
     # Create the scatter plot using Seaborn with improved aesthetics
     plt.figure(figsize=figsize)
@@ -99,6 +99,17 @@ def create_two_column_scatter_plot(
 
 # # Create the scatter plot with improved aesthetics
 # create_two_column_scatter_plot(model, df, 'X', 'y', title=title, xlabel=xlabel, ylabel=ylabel, figsize=figsize, save_path=save_path)
+
+# Test 1.1:
+from xai.datasets.regression_data import load_admission_prediction_data
+from xai.regression.models import load_linear_regression_model_and_data
+from xai.regression.visualizations import create_two_column_scatter_plot
+
+
+X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+df = load_admission_prediction_data()
+#create_two_column_scatter_plot(model, df, 'GRE Score', 'Chance of Admit')
+print(df.dtypes)
 
 
 # Function 2 - Scatter Plot:
