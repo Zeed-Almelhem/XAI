@@ -168,7 +168,7 @@
 # print(f"Random Forest R-squared: {rf_r2:.2f}")
 
 import pandas as pd
-from sklearn.externals import joblib
+import joblib
 
 def load_admission_regression_data_and_model():
     """
@@ -182,10 +182,11 @@ def load_admission_regression_data_and_model():
         model: Linear Regression model.
     """
     # Load data
-    X_train = pd.read_csv('admission_prediction_X_train.csv')
-    y_train = pd.read_csv('admission_prediction_y_train.csv')
-    X_test = pd.read_csv('admission_prediction_X_test.csv')
-    y_test = pd.read_csv('admission_prediction_y_test.csv')
+    #models\admission_prediction_X_test.csv
+    X_train = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_X_train.csv')
+    y_train = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_y_train.csv')
+    X_test = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_X_test.csv')
+    y_test = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_y_test.csv')
 
     # Load the Linear Regression model
     model = joblib.load('linear_regression_model.pkl')
@@ -204,10 +205,10 @@ def load_lasso_regression_data_and_model():
         model: Lasso Regression model.
     """
     # Load data
-    X_train = pd.read_csv('admission_prediction_X_train.csv')
-    y_train = pd.read_csv('admission_prediction_y_train.csv')
-    X_test = pd.read_csv('admission_prediction_X_test.csv')
-    y_test = pd.read_csv('admission_prediction_y_test.csv')
+    X_train = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_X_train.csv')
+    y_train = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_y_train.csv')
+    X_test = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_X_test.csv')
+    y_test = pd.read_csv(r'XAI\xai\regression\models\admission_prediction_y_test.csv')
 
     # Load the Lasso Regression model
     model = joblib.load('lasso_regression_model.pkl')
@@ -226,10 +227,10 @@ def load_bike_sharing_data_and_model():
         model: Random Forest model.
     """
     # Load data
-    X_train = pd.read_csv('bike_sharing_demand_X_train.csv')
-    y_train = pd.read_csv('bike_sharing_demand_y_train.csv')
-    X_test = pd.read_csv('bike_sharing_demand_X_test.csv')
-    y_test = pd.read_csv('bike_sharing_demand_y_test.csv')
+    X_train = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_X_train.csv')
+    y_train = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_y_train.csv')
+    X_test = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_X_test.csv')
+    y_test = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_y_test.csv')
 
     # Load the Random Forest model
     model = joblib.load('random_forest_model.pkl')
@@ -248,12 +249,11 @@ def load_support_vector_data_and_model():
         model: Support Vector model.
     """
     # Load data
-    X_train = pd.read_csv('bike_sharing_demand_X_train.csv')
-    y_train = pd.read_csv('bike_sharing_demand_y_train.csv')
-    X_test = pd.read_csv('bike_sharing_demand_X_test.csv')
-    y_test = pd.read_csv('bike_sharing_demand_y_test.csv')
-
+    X_train = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_X_train.csv')
+    y_train = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_y_train.csv')
+    X_test = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_X_test.csv')
+    y_test = pd.read_csv(r'XAI\xai\regression\models\bike_sharing_demand_y_test.csv')
     # Load the Support Vector model
-    model = joblib.load('support_vector_model.pkl')
+    model = joblib.load(r'XAI\xai\regression\models\support_vector_model.pkl')
 
     return X_train, y_train, X_test, y_test, model
