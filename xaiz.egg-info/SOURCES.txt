@@ -10,9 +10,9 @@ tests/create_error_heatmap.py
 tests/create_feature_importance_plot.py
 tests/create_interactive_scatter_plot.py
 tests/create_qq_plot.py
+tests/create_residual_plot_with_shapley.py
 tests/create_residual_plots.py
 tests/create_two_column_scatter_plot.py
-tests/residual_plot_with_shapley.py
 tests/visualize_advanced_regression_metrics.py
 tests/visualize_regression_metrics.py
 xai/__init__.py
@@ -20,6 +20,10 @@ xai/classification/__init__.py
 xai/classification/models/__init__.py
 xai/classification/visualizations/__init__.py
 xai/datasets/__init__.py
+xai/datasets/classification_data/__init__.py
+xai/datasets/regression_data/__init__.py
+xai/datasets/reinforcement_learning_data/__init__.py
+xai/datasets/unsupervised_data/__init__.py
 xai/regression/__init__.py
 xai/regression/models/__init__.py
 xai/regression/visualizations/__init__.py

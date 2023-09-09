@@ -949,7 +949,7 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
 
 # Function 10 - Residual Plot with Shapley Values:
 
-def residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
+def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
     # Ensure that the model is callable
     if not callable(getattr(model, "predict", None)):
         raise TypeError("The passed model is not callable and cannot be analyzed directly with the given masker! Model: " + str(model))
@@ -1012,7 +1012,7 @@ def residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
 # feature_names = [f"Feature {i}" for i in range(X.shape[1])]
 
 # # Create a residual plot with Shapley values
-# residual_plot_with_shapley(model, X_test, y_test, feature_names)
+# create_residual_plot_with_shapley(model, X_test, y_test, feature_names)
 
 
 
