@@ -103,13 +103,13 @@ def create_two_column_scatter_plot(
 # Test 1.1:
 from xai.datasets.regression_data import load_admission_prediction_data
 from xai.regression.models import load_linear_regression_model_and_data
-from xai.regression.visualizations import create_two_column_scatter_plot
+#from xai.regression.visualizations import create_two_column_scatter_plot
 
 
 X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
 df = load_admission_prediction_data()
-#create_two_column_scatter_plot(model, df, 'GRE Score', 'Chance of Admit')
-print(df.dtypes)
+create_two_column_scatter_plot(model, df, 'GRE Score', 'Chance of Admit')
+#print(df.dtypes)
 
 
 # Function 2 - Scatter Plot:
