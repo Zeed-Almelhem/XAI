@@ -100,16 +100,16 @@ def create_two_column_scatter_plot(
 # # Create the scatter plot with improved aesthetics
 # create_two_column_scatter_plot(model, df, 'X', 'y', title=title, xlabel=xlabel, ylabel=ylabel, figsize=figsize, save_path=save_path)
 
-# Test 1.1:
-from xai.datasets.regression_data import load_admission_prediction_data
-from xai.regression.models import load_linear_regression_model_and_data
-#from xai.regression.visualizations import create_two_column_scatter_plot
+# # Test 1.1:
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import create_two_column_scatter_plot
 
 
-X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
-df = load_admission_prediction_data()
-create_two_column_scatter_plot(model, df, 'GRE Score', 'Chance of Admit')
-#print(df.dtypes)
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+# create_two_column_scatter_plot(model, df, 'GRE Score', 'Chance of Admit')
+# #print(df.dtypes)
 
 
 # Function 2 - Scatter Plot:
@@ -197,34 +197,33 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
         return fig
 
     # Run the app
-    if __name__ == '__main__':
-        app.run_server(debug=True)
+    app.run_server(debug=False)
 
 ### Test 2 
 
-# import pandas as pd
-# import numpy as np
-# from sklearn.linear_model import LinearRegression
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
-# # Sample data
-# data = {
-#     'x1': np.arange(1, 11),
-#     'x2': np.arange(2, 22, 2),
-#     'y': np.array([2.3, 4.5, 6.7, 8.9, 11.1, 13.3, 15.5, 17.7, 19.9, 22.1])
-# }
+# Sample data
+data = {
+    'x1': np.arange(1, 11),
+    'x2': np.arange(2, 22, 2),
+    'y': np.array([2.3, 4.5, 6.7, 8.9, 11.1, 13.3, 15.5, 17.7, 19.9, 22.1])
+}
 
-# # Create a DataFrame
-# df = pd.DataFrame(data)
+# Create a DataFrame
+df = pd.DataFrame(data)
 
-# # Define the x-column names (you can provide your own list of column names)
-# x_column_names = ['x1', 'x2']
+# Define the x-column names (you can provide your own list of column names)
+x_column_names = ['x1', 'x2']
 
-# # Create a linear regression model
-# model = LinearRegression()
-# model.fit(df[x_column_names[0]].values.reshape(-1, 1), df['y'])
+# Create a linear regression model
+model = LinearRegression()
+model.fit(df[x_column_names[0]].values.reshape(-1, 1), df['y'])
 
-# # Use the create_interactive_scatter_plot function
-# create_interactive_scatter_plot(model, df, x_column_names, 'y')
+# Use the create_interactive_scatter_plot function
+create_interactive_scatter_plot(model, df, x_column_names, 'y')
 
 
 # Function 3 - Scatter Plot:
