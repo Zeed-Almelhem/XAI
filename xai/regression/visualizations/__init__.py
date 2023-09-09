@@ -197,7 +197,7 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
         return fig
 
     # Run the app
-    app.run_server(debug=False)
+    app.run_server(debug=True)
 
 ### Test 2 
 
