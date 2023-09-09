@@ -145,42 +145,46 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
         dcc.Graph(id='scatter-plot'),
     ])
 
-    # Define the callback to update the scatter plot
+     # Define the callback to update the scatter plot
     @app.callback(
         Output('scatter-plot', 'figure'),
         [Input('x-axis-dropdown', 'value')]
     )
     def update_scatter_plot(selected_x_column):
-        # Use the model to make predictions for the selected x-column
-        x_data = df[selected_x_column]
-        y_predicted = model.predict(x_data.values.reshape(-1, 1))
-        
+        # Sort the data frame based on the selected x-column
+        df_sorted = df.sort_values(by=selected_x_column)
+    
+        # Use the model to make predictions for all x-columns
+        x_data = df_sorted[x_column_names]  # Pass all x-columns to the model
+        y_predicted = model.predict(x_data)  # Predict using all x-columns
+    
         # Create a scatter plot
         fig = go.Figure()
 
         # Add scatter points
         hover_texts = []  # Store hover texts
-        for i in range(len(df)):
-            hover_text = f'X: {x_data.iloc[i]:.2f}<br>Y: {df[y_column_name].iloc[i]:.2f}<br>Predicted: {y_predicted[i]:.2f}'
+        for i in range(len(df_sorted)):
+            hover_text = f'Y: {df_sorted[y_column_name].iloc[i]:.2f}<br>Predicted: {y_predicted[i]:.2f}'
             hover_texts.append(hover_text)
-        
+    
         fig.add_trace(go.Scatter(
-            x=x_data,
-            y=df[y_column_name],
+            x=df_sorted[selected_x_column],  # Use the sorted x-column for x-axis
+            y=df_sorted[y_column_name],
             mode='markers',
             name='Actual',
             text=hover_texts,
             hoverinfo='text',
             marker=dict(color='blue'),  # Set a single color
         ))
-        
+    
         # Add the fitted model line to the plot
         fig.add_trace(go.Scatter(
-            x=x_data,
+            x=df_sorted[selected_x_column],  # Use the sorted x-column for x-axis
             y=y_predicted,
             mode='lines',
             name='Fitted Model',
-            hoverinfo='none'
+            hoverinfo='none',
+            line=dict(width=5)
         ))
 
         # Customize the layout
@@ -201,29 +205,40 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
 
 ### Test 2 
 
-import pandas as pd
-import numpy as np
-from sklearn.linear_model import LinearRegression
+# import pandas as pd
+# import numpy as np
+# from sklearn.linear_model import LinearRegression
 
-# Sample data
-data = {
-    'x1': np.arange(1, 11),
-    'x2': np.arange(2, 22, 2),
-    'y': np.array([2.3, 4.5, 6.7, 8.9, 11.1, 13.3, 15.5, 17.7, 19.9, 22.1])
-}
+# # Sample data
+# data = {
+#     'x1': np.arange(1, 11),
+#     'x2': np.arange(2, 22, 2),
+#     'y': np.array([2.3, 4.5, 6.7, 8.9, 11.1, 13.3, 15.5, 17.7, 19.9, 22.1])
+# }
 
-# Create a DataFrame
-df = pd.DataFrame(data)
+# # Create a DataFrame
+# df = pd.DataFrame(data)
 
-# Define the x-column names (you can provide your own list of column names)
-x_column_names = ['x1', 'x2']
+# # Define the x-column names (you can provide your own list of column names)
+# x_column_names = ['x1', 'x2']
 
-# Create a linear regression model
-model = LinearRegression()
-model.fit(df[x_column_names[0]].values.reshape(-1, 1), df['y'])
+# # Create a linear regression model
+# model = LinearRegression()
+# model.fit(df[x_column_names[0]].values.reshape(-1, 1), df['y'])
 
-# Use the create_interactive_scatter_plot function
-create_interactive_scatter_plot(model, df, x_column_names, 'y')
+# # Use the create_interactive_scatter_plot function
+# create_interactive_scatter_plot(model, df, x_column_names, 'y')
+
+# # Test 2.1
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import create_interactive_scatter_plot
+
+
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+
+# create_interactive_scatter_plot(model, df, X_train.columns.tolist(), y_train.columns.tolist()[0])
 
 
 # Function 3 - Scatter Plot:
