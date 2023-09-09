@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 keywords=[
-    'xai', 'explainable ai', 'interpretable ai', 'machine learning',
+    'xai','xaiz', 'explainable ai', 'interpretable ai', 'machine learning',
     'deep learning', 'artificial intelligence', 'data science',
     'model interpretability', 'model transparency', 'model explanation',
     'model visualization', 'regression analysis', 'classification',
@@ -90,7 +90,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 """
 
 setup(
-    name="xai",
+    name="xaiz",
     version="0.0.1",
     packages=find_packages(),
     install_requires=dependencies,
@@ -107,3 +107,7 @@ setup(
         "Operating System :: OS Independent",
     ],
 )
+
+# python setup.py sdist bdist_wheel
+# pip install twine
+# twine upload dist/*
