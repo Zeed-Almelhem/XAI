@@ -315,34 +315,46 @@ def create_3d_scatter_plot(model, df, x_column1, x_column2, y_column):
 
 ### Test 3 
 
-# import pandas as pd
-# import numpy as np
-# from sklearn.linear_model import LinearRegression
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import plotly.offline as pyo
+
+# Sample data
+data = {
+    'Column1': np.random.rand(100),
+    'Column2': np.random.rand(100),
+    'TargetColumn': 2 * np.random.rand(100) + 3,
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Train a regression model
+X = df[['Column1', 'Column2']]
+y = df['TargetColumn']
+model = LinearRegression()
+model.fit(X, y)
+
+# Create the 3D scatter plot
+fig = create_3d_scatter_plot(model, df, 'Column1', 'Column2', 'TargetColumn')
+
+# Show the plot
+pyo.plot(fig, filename='3d_scatter_plot.html')
+
+# Test 3.1
 # import plotly.offline as pyo
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# # from xai.regression.visualizations import create_3d_scatter_plot
 
-# # Sample data
-# data = {
-#     'Column1': np.random.rand(100),
-#     'Column2': np.random.rand(100),
-#     'TargetColumn': 2 * np.random.rand(100) + 3,
-# }
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
 
-# # Create a DataFrame
-# df = pd.DataFrame(data)
-
-# # Train a regression model
-# X = df[['Column1', 'Column2']]
-# y = df['TargetColumn']
-# model = LinearRegression()
-# model.fit(X, y)
-
-# # Create the 3D scatter plot
-# fig = create_3d_scatter_plot(model, df, 'Column1', 'Column2', 'TargetColumn')
+# fig = create_3d_scatter_plot(model, df, 'GRE Score', 'TOEFL Score', 'Chance of Admit')
 
 # # Show the plot
 # pyo.plot(fig, filename='3d_scatter_plot.html')
-
-
 
 # Function 4 - Scatter Plot:
 
