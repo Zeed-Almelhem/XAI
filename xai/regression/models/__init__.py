@@ -215,7 +215,7 @@ def load_lasso_regression_data_and_model():
 
     return X_train, y_train, X_test, y_test, model
 
-def load_bike_sharing_data_and_model():
+def load_random_forest_data_and_model():
     """
     Load data and a Random Forest model for bike sharing demand prediction.
 
@@ -258,17 +258,17 @@ def load_support_vector_data_and_model():
 
     return X_train, y_train, X_test, y_test, model
 
+# Test:
 
+# X_train, y_train, X_test, y_test, model = load_random_forest_data_and_model()
+# print(model)
 
-X_train, y_train, X_test, y_test, model = load_admission_regression_data_and_model()
+# # import os
 
-print(model)
-# import os
+# # # Get the current working directory
+# # current_directory = os.getcwd()
+# # print("Current Directory:", current_directory)
 
-# # Get the current working directory
-# current_directory = os.getcwd()
-# print("Current Directory:", current_directory)
-
-# # List the files in the current directory
-# files_in_directory = os.listdir(current_directory)
-# print("Files in Directory:", files_in_directory)
+# # # List the files in the current directory
+# # files_in_directory = os.listdir(current_directory)
+# # print("Files in Directory:", files_in_directory)
