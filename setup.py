@@ -91,7 +91,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 setup(
     name="xai-kit",
-    version="0.0.2",
+    version="0.0.3",
     packages=find_packages(),
     package_data={
         'xai.datasets.regression_data': ['*.csv'],
