@@ -315,32 +315,32 @@ def create_3d_scatter_plot(model, df, x_column1, x_column2, y_column):
 
 ### Test 3 
 
-import pandas as pd
-import numpy as np
-from sklearn.linear_model import LinearRegression
-import plotly.offline as pyo
+# import pandas as pd
+# import numpy as np
+# from sklearn.linear_model import LinearRegression
+# import plotly.offline as pyo
 
-# Sample data
-data = {
-    'Column1': np.random.rand(100),
-    'Column2': np.random.rand(100),
-    'TargetColumn': 2 * np.random.rand(100) + 3,
-}
+# # Sample data
+# data = {
+#     'Column1': np.random.rand(100),
+#     'Column2': np.random.rand(100),
+#     'TargetColumn': 2 * np.random.rand(100) + 3,
+# }
 
-# Create a DataFrame
-df = pd.DataFrame(data)
+# # Create a DataFrame
+# df = pd.DataFrame(data)
 
-# Train a regression model
-X = df[['Column1', 'Column2']]
-y = df['TargetColumn']
-model = LinearRegression()
-model.fit(X, y)
+# # Train a regression model
+# X = df[['Column1', 'Column2']]
+# y = df['TargetColumn']
+# model = LinearRegression()
+# model.fit(X, y)
 
-# Create the 3D scatter plot
-fig = create_3d_scatter_plot(model, df, 'Column1', 'Column2', 'TargetColumn')
+# # Create the 3D scatter plot
+# fig = create_3d_scatter_plot(model, df, 'Column1', 'Column2', 'TargetColumn')
 
-# Show the plot
-pyo.plot(fig, filename='3d_scatter_plot.html')
+# # Show the plot
+# pyo.plot(fig, filename='3d_scatter_plot.html')
 
 # Test 3.1
 # import plotly.offline as pyo
@@ -360,7 +360,6 @@ pyo.plot(fig, filename='3d_scatter_plot.html')
 
 def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
     """
-
     Creates a 3D scatter plot dashboard using Dash with Plotly.
 
     Parameters:
@@ -371,7 +370,6 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 
     Returns:
         dash.Dash: The Dash app object.
-
     """
 
     # Initialize the Dash app
@@ -427,8 +425,16 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
         x2_range = np.linspace(min(x2), max(x2), 50)
         x1_mesh, x2_mesh = np.meshgrid(x1_range, x2_range)
 
-        # Predict the model for the meshgrid
-        x_combined = np.c_[x1_mesh.ravel(), x2_mesh.ravel()]
+        # Predict the model for the meshgrid using all x-columns except the selected ones
+        x_columns_to_use = [col for col in x_columns if col != x1_column and col != x2_column]
+        x1_mesh_flat = x1_mesh.ravel()
+        x2_mesh_flat = x2_mesh.ravel()
+        x_combined = np.column_stack([x1_mesh_flat, x2_mesh_flat])
+
+        # Add other selected x columns
+        for col in x_columns_to_use:
+            x_combined = np.column_stack([x_combined, dataframe[col].values])
+
         y_predicted = model.predict(x_combined)
 
         # Reshape the predicted values for plotting
@@ -456,7 +462,10 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 
         return {'data': [trace_data, trace_model], 'layout': layout}
 
+
+    app.run_server(debug=True, port= 8053)
     return app
+
 
 ### Test 4 
 
@@ -466,6 +475,7 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 
 # # Sample data
 # data = {
+
 #     'Column1': np.random.rand(100),
 #     'Column2': np.random.rand(100),
 #     'TargetColumn': 2 * np.random.rand(100) + 3,
@@ -534,6 +544,17 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 # # Run the app
 # if __name__ == '__main__':
 #     app.run_server(debug=True)
+
+# Test 5.1
+
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import create_3d_scatter_dashboard
+
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+
+# app = create_3d_scatter_dashboard(df, X_train.columns.tolist(), y_train.columns.tolist()[0], model )
 
 
 # Function 5 - Residual Plot:
