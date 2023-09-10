@@ -1053,17 +1053,17 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
 # visualize_advanced_regression_metrics(y_test, y_pred, custom_losses=[("Custom Loss 1", custom_loss_function1),
 #                                                                    ("Custom Loss 2", custom_loss_function2)])
 
-# Test 10.1:
+# # Test 10.1:
 
-from xai.datasets.regression_data import load_admission_prediction_data
-from xai.regression.models import load_linear_regression_model_and_data
-#from xai.regression.visualizations import visualize_advanced_regression_metrics
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import visualize_advanced_regression_metrics
 
 
-X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
-df = load_admission_prediction_data()
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
 
-visualize_advanced_regression_metrics(y_test['Chance of Admit'], model.predict(X_test))
+# visualize_advanced_regression_metrics(y_test['Chance of Admit'], model.predict(X_test))
 
 
 # Function 10 - Residual Plot with Shapley Values:
@@ -1152,8 +1152,3 @@ def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None)
 
 # # Create a residual plot with Shapley values
 # create_residual_plot_with_shapley(model, X_test, y_test, feature_names)
-
-
-
-
-
