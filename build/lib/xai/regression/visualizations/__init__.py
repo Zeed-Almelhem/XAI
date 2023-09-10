@@ -53,7 +53,7 @@ def create_two_column_scatter_plot(
     y_actual = df[y_column]
 
     # Use the model to make predictions
-    y_predicted = model.predict(x_data.values.reshape(-1, 1))
+    y_predicted = model.predict(df.drop(columns=[y_column]))
 
     # Create the scatter plot using Seaborn with improved aesthetics
     plt.figure(figsize=figsize)
@@ -100,6 +100,17 @@ def create_two_column_scatter_plot(
 # # Create the scatter plot with improved aesthetics
 # create_two_column_scatter_plot(model, df, 'X', 'y', title=title, xlabel=xlabel, ylabel=ylabel, figsize=figsize, save_path=save_path)
 
+# # Test 1.1:
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import create_two_column_scatter_plot
+
+
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+# create_two_column_scatter_plot(model, df, 'GRE Score', 'Chance of Admit')
+# #print(df.dtypes)
+
 
 # Function 2 - Scatter Plot:
 
@@ -134,42 +145,46 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
         dcc.Graph(id='scatter-plot'),
     ])
 
-    # Define the callback to update the scatter plot
+     # Define the callback to update the scatter plot
     @app.callback(
         Output('scatter-plot', 'figure'),
         [Input('x-axis-dropdown', 'value')]
     )
     def update_scatter_plot(selected_x_column):
-        # Use the model to make predictions for the selected x-column
-        x_data = df[selected_x_column]
-        y_predicted = model.predict(x_data.values.reshape(-1, 1))
-        
+        # Sort the data frame based on the selected x-column
+        df_sorted = df.sort_values(by=selected_x_column)
+    
+        # Use the model to make predictions for all x-columns
+        x_data = df_sorted[x_column_names]  # Pass all x-columns to the model
+        y_predicted = model.predict(x_data)  # Predict using all x-columns
+    
         # Create a scatter plot
         fig = go.Figure()
 
         # Add scatter points
         hover_texts = []  # Store hover texts
-        for i in range(len(df)):
-            hover_text = f'X: {x_data.iloc[i]:.2f}<br>Y: {df[y_column_name].iloc[i]:.2f}<br>Predicted: {y_predicted[i]:.2f}'
+        for i in range(len(df_sorted)):
+            hover_text = f'Y: {df_sorted[y_column_name].iloc[i]:.2f}<br>Predicted: {y_predicted[i]:.2f}'
             hover_texts.append(hover_text)
-        
+    
         fig.add_trace(go.Scatter(
-            x=x_data,
-            y=df[y_column_name],
+            x=df_sorted[selected_x_column],  # Use the sorted x-column for x-axis
+            y=df_sorted[y_column_name],
             mode='markers',
             name='Actual',
             text=hover_texts,
             hoverinfo='text',
             marker=dict(color='blue'),  # Set a single color
         ))
-        
+    
         # Add the fitted model line to the plot
         fig.add_trace(go.Scatter(
-            x=x_data,
+            x=df_sorted[selected_x_column],  # Use the sorted x-column for x-axis
             y=y_predicted,
             mode='lines',
             name='Fitted Model',
-            hoverinfo='none'
+            hoverinfo='none',
+            line=dict(width=5)
         ))
 
         # Customize the layout
@@ -186,8 +201,7 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
         return fig
 
     # Run the app
-    if __name__ == '__main__':
-        app.run_server(debug=True)
+    app.run_server(debug=True)
 
 ### Test 2 
 
@@ -214,6 +228,17 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
 
 # # Use the create_interactive_scatter_plot function
 # create_interactive_scatter_plot(model, df, x_column_names, 'y')
+
+# # Test 2.1
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import create_interactive_scatter_plot
+
+
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+
+# create_interactive_scatter_plot(model, df, X_train.columns.tolist(), y_train.columns.tolist()[0])
 
 
 # Function 3 - Scatter Plot:
@@ -317,13 +342,24 @@ def create_3d_scatter_plot(model, df, x_column1, x_column2, y_column):
 # # Show the plot
 # pyo.plot(fig, filename='3d_scatter_plot.html')
 
+# Test 3.1
+# import plotly.offline as pyo
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# # from xai.regression.visualizations import create_3d_scatter_plot
 
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+
+# fig = create_3d_scatter_plot(model, df, 'GRE Score', 'TOEFL Score', 'Chance of Admit')
+
+# # Show the plot
+# pyo.plot(fig, filename='3d_scatter_plot.html')
 
 # Function 4 - Scatter Plot:
 
 def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
     """
-
     Creates a 3D scatter plot dashboard using Dash with Plotly.
 
     Parameters:
@@ -334,7 +370,6 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 
     Returns:
         dash.Dash: The Dash app object.
-
     """
 
     # Initialize the Dash app
@@ -390,8 +425,16 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
         x2_range = np.linspace(min(x2), max(x2), 50)
         x1_mesh, x2_mesh = np.meshgrid(x1_range, x2_range)
 
-        # Predict the model for the meshgrid
-        x_combined = np.c_[x1_mesh.ravel(), x2_mesh.ravel()]
+        # Predict the model for the meshgrid using all x-columns except the selected ones
+        x_columns_to_use = [col for col in x_columns if col != x1_column and col != x2_column]
+        x1_mesh_flat = x1_mesh.ravel()
+        x2_mesh_flat = x2_mesh.ravel()
+        x_combined = np.column_stack([x1_mesh_flat, x2_mesh_flat])
+
+        # Add other selected x columns
+        for col in x_columns_to_use:
+            x_combined = np.column_stack([x_combined, dataframe[col].values])
+
         y_predicted = model.predict(x_combined)
 
         # Reshape the predicted values for plotting
@@ -419,7 +462,10 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 
         return {'data': [trace_data, trace_model], 'layout': layout}
 
+
+    app.run_server(debug=True, port= 8053)
     return app
+
 
 ### Test 4 
 
@@ -429,6 +475,7 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 
 # # Sample data
 # data = {
+
 #     'Column1': np.random.rand(100),
 #     'Column2': np.random.rand(100),
 #     'TargetColumn': 2 * np.random.rand(100) + 3,
@@ -497,6 +544,17 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
 # # Run the app
 # if __name__ == '__main__':
 #     app.run_server(debug=True)
+
+# Test 5.1
+
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import create_3d_scatter_dashboard
+
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+
+# app = create_3d_scatter_dashboard(df, X_train.columns.tolist(), y_train.columns.tolist()[0], model )
 
 
 # Function 5 - Residual Plot:
@@ -572,7 +630,7 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
     - feature_names: A list of feature names corresponding to the importance scores.
 
     Returns:
-    - None
+    - fig: Plotly Figure object representing the feature importance plot.
 
     Note:
     To obtain feature importance scores based on your specific regression model, please refer to the following link
@@ -584,10 +642,16 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
     # Create a DataFrame to store feature importance data
     data = {"Feature Names": feature_names, "Importance Score": importance}
     
+    # Determine colors based on importance values (Positive for positive, Negative for negative)
+    colors = ["Positive" if score >= 0 else "Negative" for score in importance]
+
+    # Apply a logarithmic transformation to importance scores for better visualization
+    importance = np.log(np.abs(importance) + 1)  # Adding 1 to prevent log(0)
+
     # Create an interactive bar plot using Plotly
     fig = px.bar(data, x="Importance Score", y="Feature Names", orientation="h", text="Importance Score",
                  title="Feature Importance Plot", labels={"Importance Score": "Importance Score"},
-                 color_discrete_sequence=["#1f77b4"] * len(data))  # Set custom color
+                 color=colors, color_discrete_map={"Positive": "blue", "Negative": "red"})
 
     # Customize hover text
     fig.update_traces(texttemplate='%{text:.4f}', textposition='outside')
@@ -597,7 +661,7 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
         autosize=False,
         width=width,
         height=height,
-        xaxis_title="Importance Score",
+        xaxis_title="Log Importance Score",
         yaxis_title="Feature Names",
         font=dict(size=14, color="white"),
         paper_bgcolor="black",  # Set dark black background
@@ -605,8 +669,8 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
     )
 
     # Show the interactive plot
-    fig.show()
     return fig
+    
 
 ### Test 7
 
@@ -631,7 +695,25 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
 # feature_names = ["Feature 1", "Feature 2", "Feature 3"]
 
 # # Create the feature importance plot
-# create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
+# fig = create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
+# fig.show()
+
+# Test 7.1:
+
+# from xai.datasets.regression_data import load_bike_sharing_demand_data
+# from xai.regression.models import load_support_vector_model_and_data
+# #from xai.regression.visualizations import create_feature_importance_plot
+
+# X_train, y_train, X_test, y_test, model = load_support_vector_model_and_data()
+# df = load_bike_sharing_demand_data()
+
+# # Extract feature importances (in this case, coefficients) and feature names
+# feature_importance = model.coef_.tolist()[0]
+# feature_names = X_train.columns.tolist()
+
+# fig = create_feature_importance_plot(feature_importance, feature_names, width=1400, height=800)
+# fig.show()
+
 
 
 # Function 7 - Partial Dependence Plot (PDP):
@@ -675,7 +757,6 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
     )
 
     # Show the interactive plot
-    fig.show()
     return fig
 
 ### Test 8
@@ -683,7 +764,7 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
 # import pandas as pd
 # import numpy as np
 
-# # Sample data
+# #Sample data
 # actual_values = np.random.rand(100) * 10  # Actual target values
 # predicted_values = actual_values + np.random.normal(0, 1, 100)  # Predicted target values (with some noise)
 
@@ -691,19 +772,21 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
 # data = pd.DataFrame({'Actual': actual_values, 'Predicted': predicted_values})
 
 # # Create the Actual vs. Predicted Value Distribution plot
-# create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
+# fig = create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
+# fig.show()
+
 
 
 # Function 8 - QQ Plot (Quantile-Quantile Plot):
 
-def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
+def create_qq_plot(residuals, title="QQ Plot", figsize=(12, 10), color="#1f77b4"):
     """
     Create a QQ Plot to assess whether residuals follow a normal distribution using Seaborn.
 
     Parameters:
     - residuals: A NumPy array or list containing the residuals of a regression model.
     - title: Title for the QQ Plot (default is "QQ Plot").
-    - figsize: Figure size (width, height) in inches (default is (8, 6)).
+    - figsize: Figure size (width, height) in inches (default is (12, 10)).
     - color: Color for the QQ Plot points (default is "#1f77b4").
 
     Returns:
@@ -721,9 +804,12 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
     # Create QQ Plot using Seaborn
     plt.figure(figsize=figsize)
     sns.scatterplot(x=theoretical_quantiles, y=sorted_residuals, color=color, edgecolor="k", alpha=0.7)
-    plt.title(title)
-    plt.xlabel("Theoretical Quantiles")
-    plt.ylabel("Sorted Residuals")
+    
+    # Customize plot based on figsize
+    fontsize = int(min(figsize) * 0.05)  # Adjust fontsize based on the smaller dimension of figsize
+    plt.title(title, fontsize=fontsize + 2)
+    plt.xlabel("Theoretical Quantiles", fontsize=fontsize)
+    plt.ylabel("Sorted Residuals", fontsize=fontsize)
 
     # Customize plot
     plt.grid(True, linestyle="--", alpha=0.6)
@@ -731,6 +817,7 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
 
     # Show the QQ Plot
     plt.show()
+
 
 ### Test 9
 
@@ -756,6 +843,26 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
 # # Create a QQ Plot
 # create_qq_plot(residuals, title="QQ Plot for Residuals")
 
+# Test 9.1:
+
+# # Import necessary functions and libraries
+# from xai.datasets.regression_data import load_bike_sharing_demand_data
+# from xai.regression.models import load_random_forest_model_and_data
+# # from xai.regression.visualizations import create_qq_plot
+
+# # Load the trained support vector regression model and data
+# X_train, y_train, X_test, y_test, model = load_random_forest_model_and_data()
+
+# # Load the bike sharing demand dataset
+# df = load_bike_sharing_demand_data()
+
+# # Use the model to make predictions on the test data
+# predicted = model.predict(X_test)
+
+# # Calculate the residuals (actual - predicted)
+# residuals = y_test['count'] - predicted
+
+# create_qq_plot(residuals)
 
 
 # Function 9 - Calculate regression evaluation metrics:
@@ -909,6 +1016,7 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
             ax.set_ylabel("Frequency")
             ax.legend()
 
+    plt.tight_layout()
     plt.show()
 
 
@@ -945,11 +1053,42 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
 # visualize_advanced_regression_metrics(y_test, y_pred, custom_losses=[("Custom Loss 1", custom_loss_function1),
 #                                                                    ("Custom Loss 2", custom_loss_function2)])
 
+# # Test 10.1:
+
+# from xai.datasets.regression_data import load_admission_prediction_data
+# from xai.regression.models import load_linear_regression_model_and_data
+# #from xai.regression.visualizations import visualize_advanced_regression_metrics
+
+
+# X_train, y_train, X_test, y_test, model = load_linear_regression_model_and_data()
+# df = load_admission_prediction_data()
+
+# visualize_advanced_regression_metrics(y_test['Chance of Admit'], model.predict(X_test))
 
 
 # Function 10 - Residual Plot with Shapley Values:
 
 def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
+    """
+    Create a residual plot with Shapley values to assess the relationship between residuals and Shapley values.
+
+    Parameters:
+    - model: A callable machine learning model with a predict function.
+    - X_test: The test dataset features for making predictions.
+    - y_test: The true target values corresponding to the test dataset.
+    - feature_names: (Optional) List of feature names for better visualization (default is None).
+
+    Raises:
+    - TypeError: If the passed model is not callable with a predict function.
+
+    This function calculates model predictions, residuals, Shapley values, and then creates a scatter plot
+    to visualize the relationship between Shapley values and residuals. It helps assess how individual feature
+    importance (Shapley values) relates to prediction errors (residuals).
+
+    Example Usage:
+    create_residual_plot_with_shapley(model, X_test, y_test, feature_names=["Feature1", "Feature2"])
+    """
+
     # Ensure that the model is callable
     if not callable(getattr(model, "predict", None)):
         raise TypeError("The passed model is not callable and cannot be analyzed directly with the given masker! Model: " + str(model))
@@ -979,11 +1118,11 @@ def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None)
     df = pd.DataFrame({"Shapley Values": shapley_values_flat, "Residuals": residuals_flat})
     
     # Create a scatter plot
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(20, 12))
     plt.scatter(df["Shapley Values"], df["Residuals"], alpha=0.5)
-    plt.xlabel("Shapley Values")
-    plt.ylabel("Residuals")
-    plt.title("Residual Plot with Shapley Values")
+    plt.xlabel("Shapley Values", fontsize= 12)
+    plt.ylabel("Residuals", fontsize=12)
+    plt.title("Residual Plot with Shapley Values", fontsize= 14)
     
     # Show the plot
     plt.show()
@@ -1013,80 +1152,3 @@ def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None)
 
 # # Create a residual plot with Shapley values
 # create_residual_plot_with_shapley(model, X_test, y_test, feature_names)
-
-
-
-# Function 11 - Error Heatmap by Feature:
-
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-def create_error_heatmap(data, target_column, model, feature_columns):
-    """
-    Create an error heatmap by feature using Seaborn.
-
-    Parameters:
-    - data: DataFrame containing both feature and target columns.
-    - target_column: Name of the target column.
-    - model: Trained regression model.
-    - feature_columns: List of feature column names.
-
-    Returns:
-    - None
-    """
-    # Copy the data and add predicted values to the DataFrame
-    df = data.copy()
-    df['Predicted'] = model.predict(df[feature_columns])
-
-    # Calculate prediction errors
-    df['Error'] = df[target_column] - df['Predicted']
-
-    # Create a pivot table for the error heatmap
-    error_pivot = df.pivot_table(index=feature_columns[0], columns=feature_columns[1], values='Error', aggfunc='mean')
-
-    # Create the error heatmap using Seaborn
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(error_pivot, cmap='coolwarm', annot=True, fmt='.2f', cbar_kws={'label': 'Mean Error'})
-    plt.title('Error Heatmap by Feature')
-    plt.xlabel(feature_columns[1])
-    plt.ylabel(feature_columns[0])
-    plt.show()
-
-
-### Test 12:
-
-# import pandas as pd
-# import numpy as np
-# from sklearn.model_selection import train_test_split
-# from sklearn.linear_model import LinearRegression
-# import plotly.express as px
-
-# # Generate sample data
-# np.random.seed(0)
-# data = {
-#     'Feature1': np.random.rand(100),
-#     'Feature2': np.random.rand(100),
-#     'Target': 2 * np.random.rand(100) + 3
-# }
-# df = pd.DataFrame(data)
-
-# # Split the data into features and target
-# X = df[['Feature1', 'Feature2']]
-# y = df['Target']
-
-# # Split the data into training and testing sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-# # Train a linear regression model
-# model = LinearRegression()
-# model.fit(X_train, y_train)
-
-# # Add predicted values to the test data
-# df_test = X_test.copy()
-# df_test['Target'] = y_test
-# df_test['Predicted'] = model.predict(X_test)
-
-# # Create an error heatmap by feature
-# create_error_heatmap(df_test, 'Target', model, ['Feature1', 'Feature2'])
-
