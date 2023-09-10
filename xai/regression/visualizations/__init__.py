@@ -630,7 +630,7 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
     - feature_names: A list of feature names corresponding to the importance scores.
 
     Returns:
-    - None
+    - fig: Plotly Figure object representing the feature importance plot.
 
     Note:
     To obtain feature importance scores based on your specific regression model, please refer to the following link
@@ -642,10 +642,16 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
     # Create a DataFrame to store feature importance data
     data = {"Feature Names": feature_names, "Importance Score": importance}
     
+    # Determine colors based on importance values (Positive for positive, Negative for negative)
+    colors = ["Positive" if score >= 0 else "Negative" for score in importance]
+
+    # Apply a logarithmic transformation to importance scores for better visualization
+    importance = np.log(np.abs(importance) + 1)  # Adding 1 to prevent log(0)
+
     # Create an interactive bar plot using Plotly
     fig = px.bar(data, x="Importance Score", y="Feature Names", orientation="h", text="Importance Score",
                  title="Feature Importance Plot", labels={"Importance Score": "Importance Score"},
-                 color_discrete_sequence=["#1f77b4"] * len(data))  # Set custom color
+                 color=colors, color_discrete_map={"Positive": "blue", "Negative": "red"})
 
     # Customize hover text
     fig.update_traces(texttemplate='%{text:.4f}', textposition='outside')
@@ -655,7 +661,7 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
         autosize=False,
         width=width,
         height=height,
-        xaxis_title="Importance Score",
+        xaxis_title="Log Importance Score",
         yaxis_title="Feature Names",
         font=dict(size=14, color="white"),
         paper_bgcolor="black",  # Set dark black background
@@ -663,8 +669,8 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
     )
 
     # Show the interactive plot
-    fig.show()
     return fig
+    
 
 ### Test 7
 
@@ -689,7 +695,25 @@ def create_feature_importance_plot(importance, feature_names, width=800, height=
 # feature_names = ["Feature 1", "Feature 2", "Feature 3"]
 
 # # Create the feature importance plot
-# create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
+# fig = create_feature_importance_plot(feature_importance, feature_names, height=700, width=1400)
+# fig.show()
+
+# Test 7.1:
+
+# from xai.datasets.regression_data import load_bike_sharing_demand_data
+# from xai.regression.models import load_support_vector_model_and_data
+# #from xai.regression.visualizations import create_feature_importance_plot
+
+# X_train, y_train, X_test, y_test, model = load_support_vector_model_and_data()
+# df = load_bike_sharing_demand_data()
+
+# # Extract feature importances (in this case, coefficients) and feature names
+# feature_importance = model.coef_.tolist()[0]
+# feature_names = X_train.columns.tolist()
+
+# fig = create_feature_importance_plot(feature_importance, feature_names, width=1400, height=800)
+# fig.show()
+
 
 
 # Function 7 - Partial Dependence Plot (PDP):
@@ -733,7 +757,6 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
     )
 
     # Show the interactive plot
-    fig.show()
     return fig
 
 ### Test 8
@@ -741,7 +764,7 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
 # import pandas as pd
 # import numpy as np
 
-# # Sample data
+# #Sample data
 # actual_values = np.random.rand(100) * 10  # Actual target values
 # predicted_values = actual_values + np.random.normal(0, 1, 100)  # Predicted target values (with some noise)
 
@@ -749,19 +772,21 @@ def create_actual_vs_predicted_distribution(actual, predicted, title='Actual vs.
 # data = pd.DataFrame({'Actual': actual_values, 'Predicted': predicted_values})
 
 # # Create the Actual vs. Predicted Value Distribution plot
-# create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
+# fig = create_actual_vs_predicted_distribution(data['Actual'], data['Predicted'], title='Sample Actual vs. Predicted Distribution', height=800, width= 1600)
+# fig.show()
+
 
 
 # Function 8 - QQ Plot (Quantile-Quantile Plot):
 
-def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
+def create_qq_plot(residuals, title="QQ Plot", figsize=(12, 10), color="#1f77b4"):
     """
     Create a QQ Plot to assess whether residuals follow a normal distribution using Seaborn.
 
     Parameters:
     - residuals: A NumPy array or list containing the residuals of a regression model.
     - title: Title for the QQ Plot (default is "QQ Plot").
-    - figsize: Figure size (width, height) in inches (default is (8, 6)).
+    - figsize: Figure size (width, height) in inches (default is (12, 10)).
     - color: Color for the QQ Plot points (default is "#1f77b4").
 
     Returns:
@@ -779,9 +804,12 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
     # Create QQ Plot using Seaborn
     plt.figure(figsize=figsize)
     sns.scatterplot(x=theoretical_quantiles, y=sorted_residuals, color=color, edgecolor="k", alpha=0.7)
-    plt.title(title)
-    plt.xlabel("Theoretical Quantiles")
-    plt.ylabel("Sorted Residuals")
+    
+    # Customize plot based on figsize
+    fontsize = int(min(figsize) * 0.05)  # Adjust fontsize based on the smaller dimension of figsize
+    plt.title(title, fontsize=fontsize + 2)
+    plt.xlabel("Theoretical Quantiles", fontsize=fontsize)
+    plt.ylabel("Sorted Residuals", fontsize=fontsize)
 
     # Customize plot
     plt.grid(True, linestyle="--", alpha=0.6)
@@ -789,6 +817,7 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
 
     # Show the QQ Plot
     plt.show()
+
 
 ### Test 9
 
@@ -814,6 +843,26 @@ def create_qq_plot(residuals, title="QQ Plot", figsize=(8, 6), color="#1f77b4"):
 # # Create a QQ Plot
 # create_qq_plot(residuals, title="QQ Plot for Residuals")
 
+# Test 9.1:
+
+# # Import necessary functions and libraries
+# from xai.datasets.regression_data import load_bike_sharing_demand_data
+# from xai.regression.models import load_random_forest_model_and_data
+# # from xai.regression.visualizations import create_qq_plot
+
+# # Load the trained support vector regression model and data
+# X_train, y_train, X_test, y_test, model = load_random_forest_model_and_data()
+
+# # Load the bike sharing demand dataset
+# df = load_bike_sharing_demand_data()
+
+# # Use the model to make predictions on the test data
+# predicted = model.predict(X_test)
+
+# # Calculate the residuals (actual - predicted)
+# residuals = y_test['count'] - predicted
+
+# create_qq_plot(residuals)
 
 
 # Function 9 - Calculate regression evaluation metrics:
@@ -1008,6 +1057,26 @@ def visualize_advanced_regression_metrics(y_true, y_pred, custom_losses=None):
 # Function 10 - Residual Plot with Shapley Values:
 
 def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None):
+    """
+    Create a residual plot with Shapley values to assess the relationship between residuals and Shapley values.
+
+    Parameters:
+    - model: A callable machine learning model with a predict function.
+    - X_test: The test dataset features for making predictions.
+    - y_test: The true target values corresponding to the test dataset.
+    - feature_names: (Optional) List of feature names for better visualization (default is None).
+
+    Raises:
+    - TypeError: If the passed model is not callable with a predict function.
+
+    This function calculates model predictions, residuals, Shapley values, and then creates a scatter plot
+    to visualize the relationship between Shapley values and residuals. It helps assess how individual feature
+    importance (Shapley values) relates to prediction errors (residuals).
+
+    Example Usage:
+    create_residual_plot_with_shapley(model, X_test, y_test, feature_names=["Feature1", "Feature2"])
+    """
+
     # Ensure that the model is callable
     if not callable(getattr(model, "predict", None)):
         raise TypeError("The passed model is not callable and cannot be analyzed directly with the given masker! Model: " + str(model))
@@ -1037,11 +1106,11 @@ def create_residual_plot_with_shapley(model, X_test, y_test, feature_names=None)
     df = pd.DataFrame({"Shapley Values": shapley_values_flat, "Residuals": residuals_flat})
     
     # Create a scatter plot
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(20, 12))
     plt.scatter(df["Shapley Values"], df["Residuals"], alpha=0.5)
-    plt.xlabel("Shapley Values")
-    plt.ylabel("Residuals")
-    plt.title("Residual Plot with Shapley Values")
+    plt.xlabel("Shapley Values", fontsize= 12)
+    plt.ylabel("Residuals", fontsize=12)
+    plt.title("Residual Plot with Shapley Values", fontsize= 14)
     
     # Show the plot
     plt.show()
