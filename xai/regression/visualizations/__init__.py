@@ -201,7 +201,7 @@ def create_interactive_scatter_plot(model, df, x_column_names, y_column_name):
         return fig
 
     # Run the app
-    app.run_server(debug=True)
+    return app
 
 ### Test 2 
 
@@ -463,7 +463,7 @@ def create_3d_scatter_dashboard(dataframe, x_columns, y_column, model):
         return {'data': [trace_data, trace_model], 'layout': layout}
 
 
-    app.run_server(debug=True, port= 8053)
+    #app.run_server(debug=True, port= 8053)
     return app
 
 
