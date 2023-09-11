@@ -39,7 +39,7 @@ The XAI (eXplainable Artificial Intelligence) Library is a powerful toolkit desi
 
 ## Features
 
-- **Advanced Visualizations**: Explore a rich collection of visualizations in the [XAI Regression Visualizations Module](xai/regression/visualizations/__init__.py) designed to unravel the intricacies of your regression models.
+- **Advanced Visualizations**: Explore a rich collection of visualizations in the [XAI Regression Visualizations Module](https://github.com/Zeed-Almelhem/XAI/blob/main/xai/regression/visualizations/__init__.py) designed to unravel the intricacies of your regression models.
 - **Datasets and Models**: Access curated datasets and pre-trained regression models to streamline your regression analysis process.
 - **Model-Agnostic Explanations**: Enjoy model-agnostic explanations for compatibility with a wide array of machine learning models.
 - **Interpretability for Diverse Data Types**: XAI is built to cater to diverse data types, including tabular data, image data, and natural language processing (NLP) models.
@@ -55,7 +55,7 @@ To harness the power of the XAI Library, follow these steps:
 
 ## Examples
 
-Explore practical examples demonstrating the library's capabilities in the [Example Notebooks](examples/) directory.
+Explore practical examples demonstrating the library's capabilities in the [Example Notebooks](https://github.com/Zeed-Almelhem/XAI/blob/main/examples/Examples.ipynb) directory.
 
 ## Documentation
 
@@ -91,7 +91,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 setup(
     name="xai-kit",
-    version="0.0.8",
+    version="0.0.9",
     packages=find_packages(),
     package_data={
         'xai.datasets.regression_data': ['*.csv'],
